@@ -11,7 +11,7 @@ import {
   TableRow
 } from '@material-ui/core'
 import Fab from '@material-ui/core/Fab'
-import { AddIcon } from '@material-ui/icons'
+import AddIcon from '@material-ui/icons/Add'
 
 import { readEvents } from '../actions';
 
@@ -35,6 +35,14 @@ class EventsIndex extends Component {
   }
 
   render() {
+    const LinkToNew = React.forwardRef((props, ref) => (
+			<Link ref={ref} to="/events/new/" {...props} />
+    ))
+    const style = {
+      position: 'absolute',
+      bottom: 0,
+      right: 0
+    }
     return (
       <React.Fragment>
         <Table>
@@ -51,7 +59,10 @@ class EventsIndex extends Component {
           </TableBody>
         </Table>
 
-        <Link to="/events/new">New</Link>
+        <Fab color="primary" aria-label="add" component={LinkToNew} style={style}>
+          <AddIcon />
+        </Fab>
+        {/* <Link to="/events/new">New</Link> */}
       </React.Fragment>
     )
   }

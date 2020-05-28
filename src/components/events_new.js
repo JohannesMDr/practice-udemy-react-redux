@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
+import { MemoryRouter as Router } from 'react-router';
 import { Link } from 'react-router-dom'
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
 
 import { postEvent } from '../actions';
 
@@ -13,10 +16,13 @@ class EventsNew extends Component {
 	renderField(field) {
 		const { input, label, type, meta: { touched, error } } = field
 		return (
-			<div>
-				<input {...input} placeholder={label} type={type} />
-				{touched && error && <span>{error}</span>}
-			</div>
+			<TextField
+				label={label}
+				type={type}
+				helperText={touched && error}
+				{...input}
+				fullWidth={true}
+			/>
 		)
 	}
 
@@ -27,16 +33,20 @@ class EventsNew extends Component {
 
   render() {
 		const { handleSubmit, pristine, submitting, invalid } = this.props
-		console.log(submitting)
+		const style = { margin: 12 }
+		const LinkToToppage = React.forwardRef((props, ref) => (
+			<Link ref={ref} to="/" {...props} />
+		))
     return (
-			<form onSubmit={handleSubmit(this.onSubmit)}>
-				<div><Field label="Title" name="title" type="text" component={this.renderField} /></div>
-				<div><Field label="Body" name="body" type="text" component={this.renderField} /></div>
-				<div>
-					<input type="submit" value="Submit" disabled={pristine || submitting || invalid } />
-					<Link to="/">Cancel</Link>
-				</div>
-			</form>
+			// <Router>
+				<form onSubmit={handleSubmit(this.onSubmit)}>
+					<div><Field label="Title" name="title" type="text" component={this.renderField} /></div>
+					<div><Field label="Body" name="body" type="text" component={this.renderField} /></div>
+
+					<Button variant="contained" label="Submit" type="submit" style={style} disabled={pristine || submitting || invalid } >submit</Button>
+					<Button variant="contained" style={style} component={LinkToToppage}>cancel</Button>
+				</form>
+			// </Router>
     )
   }
 }
